@@ -45,19 +45,19 @@ export default class Client implements IClient {
   }
   protected scheduleConnect() {
     this.ws = new WebSocket(this.url);
-    this.ws.onmessage = this.onWsMessage;
-    this.ws.onclose = this.onClose;
-    this.ws.onopen = this.onOpen;
-    this.ws.onerror = this.onError;
+    this.ws.onmessage = this.onWsMessage.bind(this);
+    this.ws.onclose = this.onClose.bind(this);
+    this.ws.onopen = this.onOpen.bind(this);
+    this.ws.onerror = this.onError.bind(this);
   }
   public connect() {
     if (!this.ws) {
       this.scheduleConnect();
     }
   }
-  sendMessage(v: string | object): void {
+  sendMessage(v: string): void {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify(v));
+      this.ws.send(v);
     }
   }
   onWsMessage(ev: MessageEvent): void {
@@ -71,7 +71,7 @@ export default class Client implements IClient {
   }
   disconnect() {
     this.connected = false;
-    this.ws?.close();
+    this.ws && this.ws.close();
   }
   isConnected() {
     return this.connected;

@@ -16,7 +16,7 @@ type IConfig = {
   insecure: boolean;
 };
 export default class WhaleClient {
-  protected client: IClient;
+  private client: IClient;
   protected requestCbs = {};
   protected listeners: Listeners = {};
   constructor(config: IConfig) {
@@ -24,10 +24,11 @@ export default class WhaleClient {
       host: config.host || "127.0.0.1",
       port: config.port || 3000,
       insecure: config.insecure || false,
-      onMessage: this.onMessage,
+      onMessage: this.onMessage.bind(this),
     });
+    this.client.connect();
   }
-  public onMessage(message: WsMessage) {
+  protected onMessage(message: WsMessage) {
     this.response(message);
   }
   public request(method: string, params: string | object, cb: Function) {
@@ -49,7 +50,7 @@ export default class WhaleClient {
     }
   }
   public close() {
-    this.client?.disconnect();
+    this.client && this.client.disconnect();
   }
   public subscribe(key: string, cb: Function) {
     if (Object.keys(this.listeners).includes(key)) {
@@ -57,8 +58,8 @@ export default class WhaleClient {
     } else {
       this.listeners[key] = [cb];
       const method = "notification.subscribe";
-      const uuid = createUUID();
-      let data = getSendData(uuid, method, {
+      // const uuid = createUUID();
+      let data = getSendData(key, method, {
         channelIds: [key],
       });
       if (this.client) {
@@ -73,5 +74,8 @@ export default class WhaleClient {
     if (this.listeners[key].length === 0) {
       Reflect.deleteProperty(this.listeners, key);
     }
+  }
+  public isConnected() {
+    return this.client.isConnected();
   }
 }
