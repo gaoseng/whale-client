@@ -6,8 +6,9 @@
   "scripts": {
     "build": "rollup --config rollup.config.js"
   },
-  "author": "",
+  "author": "gaosen",
   "license": "ISC",
+  "repository": "https://github.com/gaoseng/whale-client",
   "devDependencies": {
     "@babel/cli": "^7.15.7",
     "@babel/core": "^7.15.5",
