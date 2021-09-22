@@ -1,4 +1,4 @@
-import Client, { IClient, WsMessage } from "./components/client";
+import Client, { IClient } from "./components/client";
 import { createUUID, getSendData } from "./components/common";
 
 interface SubInfo {

@@ -10,12 +10,12 @@ export interface IClientConfig {
   onMessage(info: object);
   insecure: boolean;
 }
-export interface WsMessage {
-  id: string;
-  jsonrpc: string;
-  result: number;
-  data: object;
-}
+// export interface WsMessage {
+//   id: string;
+//   jsonrpc: string;
+//   result: number;
+//   data: object;
+// }
 export default class Client implements IClient {
   protected url: string;
   protected port: number;

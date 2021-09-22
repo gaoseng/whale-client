@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "description": "",
   "main": "lib/bundle.js",
+  "types": "./typing.d.ts",
   "scripts": {
     "build": "rollup --config rollup.config.js"
   },
