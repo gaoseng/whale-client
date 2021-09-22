@@ -70,6 +70,7 @@ export default class Client implements IClient {
     this.onMessage && this.onMessage(message);
   }
   disconnect() {
+    this.connected = false;
     this.ws?.close();
   }
   isConnected() {
