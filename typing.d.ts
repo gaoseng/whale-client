@@ -1,13 +1,15 @@
 declare interface WsMessage {
-  id: string;
+  id?: string;
   jsonrpc: string;
   result: number;
   data: object;
+  channel?: string;
 }
 declare interface Config {
   host: string;
   port: number;
   insecure: boolean;
+  path: string;
 }
 export default class WhaleClient {
   constructor(config: Config);

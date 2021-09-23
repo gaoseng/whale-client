@@ -19,6 +19,7 @@ export default class WhaleClient {
     this.client = new Client({
       host: config.host || "127.0.0.1",
       port: config.port || 3000,
+      path: config.path || "",
       insecure: config.insecure || false,
       onMessage: this.onMessage.bind(this),
     });
@@ -29,20 +30,26 @@ export default class WhaleClient {
   }
   public request(method: string, params: string | object, cb: Function) {
     const uuid = createUUID();
-    let data = getSendData(uuid, method, params);
-    this.requestCbs[uuid] = cb;
+    let _cb = cb;
+    let _params = params;
+    if (typeof params === "function") {
+      _params = {};
+      _cb = params;
+    }
+    let data = getSendData(uuid, method, _params);
+    this.requestCbs[uuid] = _cb;
     if (this.client) {
       this.client.sendMessage(data);
     }
   }
-  public response({ id, data }: WsMessage) {
-    let cb = this.requestCbs[id];
-    if (cb && typeof this.requestCbs[id] === "function") {
-      cb(data);
+  public response(msg: WsMessage) {
+    const { id, channel } = msg;
+    if (id && typeof this.requestCbs[id] === "function") {
+      this.requestCbs[id](msg);
       Reflect.deleteProperty(this.requestCbs, id);
-    } else {
+    } else if (channel) {
       let listener = this.listeners[id];
-      listener && listener.forEach((cb) => cb(data));
+      listener && listener.forEach((cb) => cb(msg));
     }
   }
   public close() {

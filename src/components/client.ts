@@ -1,4 +1,4 @@
-import { WsMessage } from "../../typing";
+import { Config, WsMessage } from "../../typing";
 
 export interface IClient {
   connect(): void;
@@ -6,11 +6,8 @@ export interface IClient {
   sendMessage(message: any): void;
   isConnected(): boolean;
 }
-export interface IClientConfig {
-  host: string;
-  port: number;
+export interface IClientConfig extends Config {
   onMessage(info: object);
-  insecure: boolean;
 }
 // export interface WsMessage {
 //   id: string;
@@ -34,15 +31,15 @@ export default class Client implements IClient {
     this.connected = true;
   }
   onClose() {
+    this.ws && this.ws.close();
     this.ws = undefined;
     this.connected = false;
-    this.ws.close();
     this.onMessage({ type: "close" });
   }
   onError() {
+    this.ws && this.ws.close();
     this.ws = undefined;
     this.connected = false;
-    this.ws.close();
     this.onMessage({ type: "error" });
   }
   protected scheduleConnect() {
