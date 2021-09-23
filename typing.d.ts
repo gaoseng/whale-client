@@ -14,9 +14,9 @@ declare interface Config {
 export default class WhaleClient {
   constructor(config: Config);
   request(method: string, params: string | object, cb: Function): void;
-  response(wsMessage: WsMessage): void;
+  protected response(wsMessage: WsMessage): void;
   subscribe(key: string, cb: Function): Function;
-  close();
+  disconnect();
   unsubscribe(key: string, fn: Function);
   isConnected(): boolean;
 }

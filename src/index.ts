@@ -2,9 +2,9 @@ import { Config, WsMessage } from "../typing";
 import Client, { IClient } from "./components/client";
 import { createUUID, getSendData } from "./components/common";
 
-interface SubInfo {
-  [id: string]: Function;
-}
+// interface SubInfo {
+//   [id: string]: Function;
+// }
 // interface Listener {
 //   [id: string]: Function[];
 // }
@@ -42,7 +42,7 @@ export default class WhaleClient {
       this.client.sendMessage(data);
     }
   }
-  public response(msg: WsMessage) {
+  protected response(msg: WsMessage) {
     const { id, channel } = msg;
     if (id && typeof this.requestCbs[id] === "function") {
       this.requestCbs[id](msg);
@@ -52,7 +52,7 @@ export default class WhaleClient {
       listener && listener.forEach((cb) => cb(msg));
     }
   }
-  public close() {
+  public disconnect() {
     this.client && this.client.disconnect();
   }
   public subscribe(key: string, cb: Function) {
