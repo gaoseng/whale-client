@@ -1,4 +1,4 @@
-import { WsMessage } from "../typing";
+import { Config, WsMessage } from "../typing";
 import Client, { IClient } from "./components/client";
 import { createUUID, getSendData } from "./components/common";
 
@@ -11,16 +11,11 @@ interface SubInfo {
 type Listeners = {
   [id: string]: Function[];
 };
-type IConfig = {
-  host: string;
-  port: number;
-  insecure: boolean;
-};
 export default class WhaleClient {
   private client: IClient;
   protected requestCbs = {};
   protected listeners: Listeners = {};
-  constructor(config: IConfig) {
+  constructor(config: Config) {
     this.client = new Client({
       host: config.host || "127.0.0.1",
       port: config.port || 3000,

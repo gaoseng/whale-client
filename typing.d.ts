@@ -4,7 +4,13 @@ declare interface WsMessage {
   result: number;
   data: object;
 }
+declare interface Config {
+  host: string;
+  port: number;
+  insecure: boolean;
+}
 export default class WhaleClient {
+  constructor(config: Config);
   request(method: string, params: string | object, cb: Function): void;
   response(wsMessage: WsMessage): void;
   subscribe(key: string, cb: Function): Function;
