@@ -48,7 +48,7 @@ export default class WhaleClient {
       this.requestCbs[id](msg);
       Reflect.deleteProperty(this.requestCbs, id);
     } else if (channel) {
-      let listener = this.listeners[id];
+      let listener = this.listeners[channel];
       listener && listener.forEach((cb) => cb(msg));
     }
   }
