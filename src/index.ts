@@ -1,3 +1,4 @@
+import { WsMessage } from "../typing";
 import Client, { IClient } from "./components/client";
 import { createUUID, getSendData } from "./components/common";
 

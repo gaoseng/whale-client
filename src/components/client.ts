@@ -1,3 +1,5 @@
+import { WsMessage } from "../../typing";
+
 export interface IClient {
   connect(): void;
   disconnect(): void;
