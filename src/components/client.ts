@@ -24,7 +24,7 @@ export default class Client implements IClient {
 
   constructor(config: IClientConfig) {
     const protocol = config.insecure ? "wss://" : "ws://";
-    this.url = protocol + config.host + ":" + config.port;
+    this.url = protocol + config.host + ":" + config.port + config.path;
     this.onMessage = config.onMessage;
   }
   onOpen() {
